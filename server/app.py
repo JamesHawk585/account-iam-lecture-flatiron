@@ -6,6 +6,22 @@ from models import User, Production, CrewMember
 from config import app, api, db
 
 
+# Using flask-restful
+class Users(Resource):
+    def post(self):
+        data = request.get_json()
+        user = User(name=data["name"], email=data["email"])
+
+        db.session.add(user)
+        db.session.commit()
+
+        session["user_id"] = user.id
+
+        return user.to_dict(), 201
+    
+api.add_resource(Users, '/signup')
+
+
 class Productions(Resource):
     def get(self):
         production_list = [p.to_dict() for p in Production.query.all()]

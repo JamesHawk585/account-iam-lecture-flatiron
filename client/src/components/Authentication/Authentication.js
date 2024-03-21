@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import "./styles.css";
 
 const Authentication = ({ updateUser }) => {
   const [signUp, setSignUp] = useState(false);
+  const navigate = useNavigate()
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+  });
 
   const handleSignUpClick = () => setSignUp((signUp) => !signUp);
 
@@ -19,23 +25,48 @@ const Authentication = ({ updateUser }) => {
     - return to server/app.py to build the next route
 */
 
-  const handleSubmit = () => {
-    console.log("Handle the submit");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const config = {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(userData),
+    };
+    fetch("/signup", config)
+      .then((r) => r.json())
+      .then((user) => {
+        updateUser(user);
+        navigate("/")
+
+      });
+  };
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    const userDataCopy = { ...userData };
+    userDataCopy[name] = value;
+
+    setUserData(userDataCopy);
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <label>Username</label>
-        <input type="text" name="name" value={"value"} onChange={console.log} />
+        <input
+          type="text"
+          name="name"
+          value={userData.name}
+          onChange={handleChange}
+        />
         {signUp && (
           <>
             <label>Email</label>
             <input
               type="text"
               name="email"
-              value={"value"}
-              onChange={console.log}
+              value={userData.email}
+              onChange={handleChange}
             />
           </>
         )}

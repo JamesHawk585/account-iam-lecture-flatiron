@@ -10,7 +10,10 @@ from config import app, api, db
 class Users(Resource):
     def post(self):
         data = request.get_json()
-        user = User(name=data["name"], email=data["email"])
+        user = User(
+            name=data["name"], 
+            email=data["email"]
+        )
 
         db.session.add(user)
         db.session.commit()
@@ -18,6 +21,15 @@ class Users(Resource):
         session["user_id"] = user.id
 
         return user.to_dict(), 201
+
+    def get(self):
+        users_list = [u.to_dict() for u in User.query.all()]
+        response = make_response(
+        users_list,
+        200,
+    )
+
+        return response
     
 api.add_resource(Users, '/signup')
 

@@ -34,12 +34,13 @@ class Users(Resource):
     
 api.add_resource(Users, '/users')
 
-@app.route("/login", method=["POST"])
+@app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
     # backend login validations and error handling go here.
+    print(data)
 
-    user = User.query.filter(user.name == data["name"]).first()
+    user = User.query.filter(User.name == data["name"]).first()
 
     session['user_id'] = user.id
     return user.to_dict(), 200

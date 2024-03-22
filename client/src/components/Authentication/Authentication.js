@@ -19,9 +19,9 @@ const Authentication = ({ updateUser }) => {
     const config = {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(signUp ? userData : userData.name),
+      body: JSON.stringify(signUp ? userData : {"name": userData.name}),
     };
-    fetch(signUp ? "/users" : "/login", config)
+    fetch(signUp ? "/users" : "http://127.0.0.1:5555/login", config)
       .then((r) => r.json())
       .then((user) => {
         updateUser(user);

@@ -12,8 +12,6 @@ const Authentication = ({ updateUser }) => {
 
   const handleSignUpClick = () => setSignUp((signUp) => !signUp);
 
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const config = {

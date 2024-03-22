@@ -45,6 +45,15 @@ def login():
     session['user_id'] = user.id
     return user.to_dict(), 200
 
+@app.route("/authorized", methods=["GET"])
+def authorized():
+    user = User.query.filter(User.id == session.get("user_id")).first()
+    print(user)
+    if user: 
+        return user.to_dict(), 200
+    else: 
+        return {"errors": ["Unauthorized"]}, 401
+
 
 class Productions(Resource):
     def get(self):

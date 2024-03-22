@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // fetchUser()
+    fetchUser()
     // fetchProductions()
   }, []);
 
@@ -23,6 +23,15 @@ function App() {
   };
 
   const fetchUser = () => {
+    fetch('/authorized')
+    .then(r => {
+      if (r.ok) {
+        console.log("Response ok")
+      } else {
+        console.log("Response not ok")
+      }
+    }) 
+      
     /*
     Create a GET fetch that goes to '/authorized'
       - If returned successfully set the user to state and fetch our productions

@@ -38,7 +38,11 @@ api.add_resource(Users, '/users')
 def login():
     data = request.get_json()
     # backend login validations and error handling go here.
+
     user = User.query.filter(user.name == data["name"]).first()
+
+    session['user_id'] = user.id
+    return user.to_dict(), 200
 
 
 class Productions(Resource):

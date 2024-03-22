@@ -21,6 +21,7 @@ class Users(Resource):
         session["user_id"] = user.id
 
         return user.to_dict(), 201
+    
 
     def get(self):
         users_list = [u.to_dict() for u in User.query.all()]
@@ -31,7 +32,13 @@ class Users(Resource):
 
         return response
     
-api.add_resource(Users, '/signup')
+api.add_resource(Users, '/users')
+
+@app.route("/login", method=["POST"])
+def login():
+    data = request.get_json()
+    # backend login validations and error handling go here.
+    user = User.query.filter(user.name == data["name"]).first()
 
 
 class Productions(Resource):

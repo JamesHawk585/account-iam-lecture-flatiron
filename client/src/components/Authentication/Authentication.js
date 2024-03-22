@@ -32,7 +32,7 @@ const Authentication = ({ updateUser }) => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(userData),
     };
-    fetch("/signup", config)
+    fetch("/users", config)
       .then((r) => r.json())
       .then((user) => {
         updateUser(user);

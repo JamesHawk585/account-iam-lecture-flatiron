@@ -53,6 +53,11 @@ def authorized():
         return user.to_dict(), 200
     else: 
         return {"errors": ["Unauthorized"]}, 401
+    
+@app.route("/logout", methods=["DELETE"])
+def logout():
+    session['user_id'] = None
+    return {}, 204
 
 
 class Productions(Resource):

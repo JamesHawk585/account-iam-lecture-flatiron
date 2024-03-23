@@ -28,7 +28,7 @@ function App() {
       if (r.ok) {
         console.log("Response ok")
       } else {
-        console.log("Response not ok")
+        console.log(r)
       }
     }) 
       
@@ -49,6 +49,13 @@ function App() {
       - If the user is not in state, return JSX and include <Navigation/> and <Authentication updateUser={updateUser}/>
       - Test out our route! Logout and try to visit other pages. Login and try to visit other pages again. Refresh the page and note that you are still logged in! 
   */
+  if(!user) return (
+    <>
+    <Navigation updateUser={updateUser}/>
+    <Authentication updateUser={updateUser}/>
+    </>
+  ) 
+
 
   return (
     <>

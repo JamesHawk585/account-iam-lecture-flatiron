@@ -2,7 +2,6 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from config import db
 
-
 class Production(db.Model, SerializerMixin):
     __tablename__ = "productions"
 

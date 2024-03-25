@@ -8,6 +8,7 @@ const Authentication = ({ updateUser }) => {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
+    password: "",
   });
 
   const handleSignUpClick = () => setSignUp((signUp) => !signUp);
@@ -17,7 +18,7 @@ const Authentication = ({ updateUser }) => {
     const config = {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(signUp ? userData : {"name": userData.name}),
+      body: JSON.stringify(signUp ? userData : {"name": userData.name, password: userData.password}),
     };
     fetch(signUp ? "/users" : "/login", config)
       .then((r) => r.json())

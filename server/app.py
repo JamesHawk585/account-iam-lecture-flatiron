@@ -5,11 +5,22 @@ from models import User, Production, CrewMember
 
 from config import app, api, db
 
+def check_for_missing_values(data):
+    import ipdb; ipdb.set_trace()
+    errors = []
+    for key, value in data.items():
+        if not value:
+            errors.append(f"{key} is required")
+    return errors
 
 # Using flask-restful
 class Users(Resource):
     def post(self):
         data = request.get_json()
+        errors = check_for_missing_values(data)
+
+
+
         user = User(
             name=data["name"], 
             email=data["email"]

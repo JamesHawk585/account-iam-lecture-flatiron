@@ -47,6 +47,21 @@ const Authentication = ({ updateUser }) => {
           value={userData.name}
           onChange={handleChange}
         />
+        <label>Email</label>
+        <input
+        type="text"
+        name="email"
+        value={userData.email}
+        onChange={handleChange}
+        >
+        </input>
+        <label>Password</label>
+        <input
+        type="password"
+        name="password"
+        value={userData.password}
+        onChange={handleChange}
+        ></input>
         {signUp && (
           <>
             <label>Email</label>

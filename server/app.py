@@ -19,6 +19,10 @@ class Users(Resource):
         errors = check_for_missing_values(data)
         if len(errors) > 0:
             return {"errors": errors}, 422
+        
+        user = user(name=data['name'], email=data["email"])
+
+        user.password_hash = data['password']
 
 
 

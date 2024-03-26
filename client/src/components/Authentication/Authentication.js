@@ -32,11 +32,13 @@ const Authentication = ({ updateUser }) => {
             setTimeout(() => {
               setErrors([]);
             }, 30000);
-            setErrors(data.errors);
+            setErrors(data.errors)
           });
         }
       })
   };
+
+
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -78,7 +80,7 @@ const Authentication = ({ updateUser }) => {
       </form>
       <div className="auth-errors-switch-wrapper">
         {/* Use uuid for error element key. */}
-        <h2 className="auth-errors">{errors.map(err => <p key={err} style={{color: "red"}}>{err}</p>)}</h2>
+        <h2 className="auth-errors">{errors ? errors.map(err => <p key={err} style={{color: "red"}}>{err}</p>) : null}</h2>
         <h2>{signUp ? "Already a member?" : "Not a member?"}</h2>
         <button onClick={handleSignUpClick}>
           {signUp ? "Log In!" : "Register now!"}

@@ -4,7 +4,8 @@ import "./styles.css";
 
 const Authentication = ({ updateUser }) => {
   const [signUp, setSignUp] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState([]);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -18,15 +19,23 @@ const Authentication = ({ updateUser }) => {
     const config = {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(signUp ? userData : {"name": userData.name, password: userData.password}),
+      body: JSON.stringify(signUp ? userData : { name: userData.name, password: userData.password }),
     };
-    fetch(signUp ? "/users" : "/login", config)
-      .then((r) => r.json())
-      .then((user) => {
-        updateUser(user);
-        navigate("/")
 
-      });
+    fetch(signUp ? "/users" : "/login", config)
+      .then((r) => {
+        if (r.ok) {
+          navigate("/")
+          console.log("Response is ok");
+        } else {
+          r.json().then((data) => {
+            setTimeout(() => {
+              setErrors([]);
+            }, 30000);
+            setErrors(data.errors);
+          });
+        }
+      })
   };
 
   const handleChange = ({ target }) => {
@@ -47,21 +56,13 @@ const Authentication = ({ updateUser }) => {
           value={userData.name}
           onChange={handleChange}
         />
-        <label>Email</label>
-        <input
-        type="text"
-        name="email"
-        value={userData.email}
-        onChange={handleChange}
-        >
-        </input>
         <label>Password</label>
         <input
-        type="password"
-        name="password"
-        value={userData.password}
-        onChange={handleChange}
-        ></input>
+          type="password"
+          name="password"
+          value={userData.password}
+          onChange={handleChange}
+        />
         {signUp && (
           <>
             <label>Email</label>
@@ -76,7 +77,8 @@ const Authentication = ({ updateUser }) => {
         <input type="submit" value={signUp ? "Sign Up!" : "Log In!"} />
       </form>
       <div className="auth-errors-switch-wrapper">
-        <h2 className="auth-errors">{"Errors here!!"}</h2>
+        {/* Use uuid for error element key. */}
+        <h2 className="auth-errors">{errors.map(err => <p key={err} style={{color: "red"}}>{err}</p>)}</h2>
         <h2>{signUp ? "Already a member?" : "Not a member?"}</h2>
         <button onClick={handleSignUpClick}>
           {signUp ? "Log In!" : "Register now!"}
@@ -85,4 +87,5 @@ const Authentication = ({ updateUser }) => {
     </>
   );
 };
+
 export default Authentication;

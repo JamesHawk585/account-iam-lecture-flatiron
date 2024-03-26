@@ -1,5 +1,6 @@
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 from models import User, Production, CrewMember
 
@@ -20,9 +21,24 @@ class Users(Resource):
         if len(errors) > 0:
             return {"errors": errors}, 422
         
-        user = user(name=data['name'], email=data["email"])
+        user = User(name=data['name'], email=data["email"])
 
         user.password_hash = data['password']
+
+        try: 
+            db.session.add(user)
+            db.session.commit()
+            session["user_id"] = user.id
+            return user.to_dict(), 201
+        except IntegrityError as e:
+            print(e)
+            print(e.orig.args)
+            if isinstance(e, (IntegrityError)):
+                for error in e.orig.args:
+                    if "UNIQUE" in error: 
+                        errors.append("Usename already taken. Please try again")
+            return {"errors": ["Errors"]} 
+
 
 
 

@@ -39,20 +39,17 @@ class Users(Resource):
                         errors.append("Usename already taken. Please try again")
             return {"errors": ["Errors"]} 
 
+        # user = User(
+        #     name=data["name"], 
+        #     email=data["email"]
+        # )
 
+        # db.session.add(user)
+        # db.session.commit()
 
+        # session["user_id"] = user.id
 
-        user = User(
-            name=data["name"], 
-            email=data["email"]
-        )
-
-        db.session.add(user)
-        db.session.commit()
-
-        session["user_id"] = user.id
-
-        return user.to_dict(), 201
+        # return user.to_dict(), 201
     
 
     def get(self):
@@ -72,7 +69,14 @@ def login():
     # backend login validations and error handling go here.
     print(data)
 
-    user = User.query.filter(User.name == data["name"]).first()
+    user = User.query.filter(User.name == data["name"])
+
+    if user: 
+        if user.authenticate(data['password']):
+            session["user_id"] = user.id
+            return user.to_dict(), 200
+    else: 
+        return {"errors": ["Username or password incorrect"]}, 401
 
     session['user_id'] = user.id
     return user.to_dict(), 200
@@ -90,6 +94,8 @@ def authorized():
 def logout():
     session['user_id'] = None
     return {}, 204
+
+
 
 
 class Productions(Resource):
